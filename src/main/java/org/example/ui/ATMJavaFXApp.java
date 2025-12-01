@@ -4,10 +4,10 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.example.model.ATMState;
 import org.example.model.Customer;
@@ -30,8 +30,6 @@ public class ATMJavaFXApp extends Application {
     private Customer currentCustomer;
     private Technician currentTechnician;
 
-
-
     @Override
     public void start(Stage stage) {
         this.primaryStage = stage;
@@ -43,14 +41,18 @@ public class ATMJavaFXApp extends Application {
     // --- Scene builders ---
 
     private void showHomeScene() {
-        Label title = new Label("ATM Transaction System");
-        title.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
+        VBox header = createHeader("ATM Transaction System", "Secure Banking Experience");
 
         Label stateLabel = new Label("ATM State: " + bank.getAtmState());
+        stateLabel.getStyleClass().add("atm-state-label");
 
         Button customerBtn = new Button("Customer Login");
         Button techBtn = new Button("Technician Login");
         Button exitBtn = new Button("Exit");
+
+        customerBtn.getStyleClass().add("atm-primary-button");
+        techBtn.getStyleClass().add("atm-secondary-button");
+        exitBtn.getStyleClass().add("atm-danger-button");
 
         customerBtn.setMaxWidth(Double.MAX_VALUE);
         techBtn.setMaxWidth(Double.MAX_VALUE);
@@ -60,14 +62,13 @@ public class ATMJavaFXApp extends Application {
         techBtn.setOnAction(e -> showTechnicianLoginScene());
         exitBtn.setOnAction(e -> primaryStage.close());
 
-        VBox center = new VBox(10, title, stateLabel, customerBtn, techBtn, exitBtn);
-        center.setAlignment(Pos.CENTER);
-        center.setPadding(new Insets(20));
+        VBox card = new VBox(12, createCardTitle("Welcome"), stateLabel, customerBtn, techBtn, exitBtn);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(20));
+        card.getStyleClass().add("atm-card");
 
-        BorderPane root = new BorderPane();
-        root.setCenter(center);
-
-        primaryStage.setScene(new Scene(root, 420, 300));
+        BorderPane root = createBaseLayout(header, card, "Insert your card to begin. For assistance, contact your bank.");
+        setSceneWithTheme(root, 460, 320);
     }
 
     // --- Customer flow ---
@@ -79,23 +80,28 @@ public class ATMJavaFXApp extends Application {
             return;
         }
 
-        Label title = new Label("Customer Login");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        VBox header = createHeader("Customer Login", "Please insert your card and enter your PIN.");
 
         TextField cardField = new TextField();
         cardField.setPromptText("Card Number");
+        cardField.getStyleClass().add("atm-input");
 
         PasswordField pinField = new PasswordField();
         pinField.setPromptText("PIN");
+        pinField.getStyleClass().add("atm-input");
 
         Button loginBtn = new Button("Login");
         Button backBtn = new Button("Back");
 
+        loginBtn.getStyleClass().add("atm-primary-button");
+        backBtn.getStyleClass().add("atm-secondary-button");
+
         HBox buttons = new HBox(10, backBtn, loginBtn);
         buttons.setAlignment(Pos.CENTER_RIGHT);
 
-        VBox box = new VBox(10, title, cardField, pinField, buttons);
-        box.setPadding(new Insets(20));
+        VBox card = new VBox(10, createCardTitle("Card & PIN"), cardField, pinField, buttons);
+        card.setPadding(new Insets(20));
+        card.getStyleClass().add("atm-card");
 
         backBtn.setOnAction(e -> showHomeScene());
         loginBtn.setOnAction(e -> {
@@ -111,9 +117,8 @@ public class ATMJavaFXApp extends Application {
             }
         });
 
-        BorderPane root = new BorderPane();
-        root.setCenter(box);
-        primaryStage.setScene(new Scene(root, 420, 260));
+        BorderPane root = createBaseLayout(header, card, "Never share your PIN with anyone, including bank staff.");
+        setSceneWithTheme(root, 460, 280);
     }
 
     private void showCustomerMenuScene() {
@@ -123,13 +128,18 @@ public class ATMJavaFXApp extends Application {
         }
 
         Label title = new Label("Customer Menu");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        title.getStyleClass().add("atm-title");
 
         Label nameLabel = new Label("Customer: " + currentCustomer.getName());
+        nameLabel.getStyleClass().add("atm-label");
 
         Button monetaryBtn = new Button("Monetary Transactions");
         Button manageBtn = new Button("Manage Account");
         Button logoutBtn = new Button("Logout (Card Returned)");
+
+        monetaryBtn.getStyleClass().add("atm-primary-button");
+        manageBtn.getStyleClass().add("atm-secondary-button");
+        logoutBtn.getStyleClass().add("atm-danger-button");
 
         monetaryBtn.setMaxWidth(Double.MAX_VALUE);
         manageBtn.setMaxWidth(Double.MAX_VALUE);
@@ -149,14 +159,14 @@ public class ATMJavaFXApp extends Application {
             showHomeScene();
         });
 
-        VBox vbox = new VBox(10, title, nameLabel, monetaryBtn, manageBtn, logoutBtn);
-        vbox.setPadding(new Insets(20));
-        vbox.setAlignment(Pos.CENTER);
+        VBox card = new VBox(10, title, nameLabel, monetaryBtn, manageBtn, logoutBtn);
+        card.setPadding(new Insets(20));
+        card.setAlignment(Pos.CENTER);
+        card.getStyleClass().add("atm-card");
 
-        BorderPane root = new BorderPane();
-        root.setCenter(vbox);
-
-        primaryStage.setScene(new Scene(root, 420, 260));
+        VBox header = createHeader("Customer Menu", "Select the operation you want to perform.");
+        BorderPane root = createBaseLayout(header, card, "For your security, you will be logged out after each transaction.");
+        setSceneWithTheme(root, 460, 300);
     }
 
     private void showMonetaryScene() {
@@ -166,12 +176,17 @@ public class ATMJavaFXApp extends Application {
         }
 
         Label title = new Label("Monetary Transactions");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        title.getStyleClass().add("atm-title");
 
         Button depositBtn = new Button("Deposit");
         Button withdrawBtn = new Button("Withdraw");
         Button balanceBtn = new Button("Check Balance");
         Button transferBtn = new Button("Transfer Money");
+
+        depositBtn.getStyleClass().add("atm-primary-button");
+        withdrawBtn.getStyleClass().add("atm-primary-button");
+        balanceBtn.getStyleClass().add("atm-secondary-button");
+        transferBtn.getStyleClass().add("atm-secondary-button");
 
         depositBtn.setMaxWidth(Double.MAX_VALUE);
         withdrawBtn.setMaxWidth(Double.MAX_VALUE);
@@ -187,13 +202,17 @@ public class ATMJavaFXApp extends Application {
         transferBtn.setOnAction(e -> doTransferFx());
 
         Button backBtn = new Button("Back");
+        backBtn.getStyleClass().add("atm-secondary-button");
         backBtn.setOnAction(e -> showCustomerMenuScene());
 
-        VBox vbox = new VBox(10, title, depositBtn, withdrawBtn, balanceBtn, transferBtn, backBtn);
-        vbox.setPadding(new Insets(20));
-        vbox.setAlignment(Pos.CENTER);
+        VBox card = new VBox(10, title, depositBtn, withdrawBtn, balanceBtn, transferBtn, backBtn);
+        card.setPadding(new Insets(20));
+        card.setAlignment(Pos.CENTER);
+        card.getStyleClass().add("atm-card");
 
-        primaryStage.setScene(new Scene(vbox, 420, 280));
+        VBox header = createHeader("Monetary Transactions", "Choose a transaction type.");
+        BorderPane root = createBaseLayout(header, card, "Cash withdrawals are limited to daily transaction limits.");
+        setSceneWithTheme(root, 480, 320);
     }
 
     private void showManageAccountScene() {
@@ -203,11 +222,15 @@ public class ATMJavaFXApp extends Application {
         }
 
         Label title = new Label("Manage Account");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        title.getStyleClass().add("atm-title");
 
         Button changePinBtn = new Button("Change PIN");
         Button emergencyBtn = new Button("Report Emergency");
         Button backBtn = new Button("Back");
+
+        changePinBtn.getStyleClass().add("atm-primary-button");
+        emergencyBtn.getStyleClass().add("atm-secondary-button");
+        backBtn.getStyleClass().add("atm-secondary-button");
 
         changePinBtn.setMaxWidth(Double.MAX_VALUE);
         emergencyBtn.setMaxWidth(Double.MAX_VALUE);
@@ -217,33 +240,41 @@ public class ATMJavaFXApp extends Application {
         emergencyBtn.setOnAction(e -> doReportEmergencyFx());
         backBtn.setOnAction(e -> showCustomerMenuScene());
 
-        VBox vbox = new VBox(10, title, changePinBtn, emergencyBtn, backBtn);
-        vbox.setPadding(new Insets(20));
-        vbox.setAlignment(Pos.CENTER);
+        VBox card = new VBox(10, title, changePinBtn, emergencyBtn, backBtn);
+        card.setPadding(new Insets(20));
+        card.setAlignment(Pos.CENTER);
+        card.getStyleClass().add("atm-card");
 
-        primaryStage.setScene(new Scene(vbox, 420, 240));
+        VBox header = createHeader("Manage Account", "Update your PIN or report an emergency.");
+        BorderPane root = createBaseLayout(header, card, "In case of stolen card, immediately contact your bank call center.");
+        setSceneWithTheme(root, 460, 280);
     }
 
     // --- Technician flow ---
 
     private void showTechnicianLoginScene() {
-        Label title = new Label("Technician Login");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        VBox header = createHeader("Technician Login", "Authorized personnel only.");
 
         TextField userField = new TextField();
         userField.setPromptText("Username");
+        userField.getStyleClass().add("atm-input");
 
         PasswordField passField = new PasswordField();
         passField.setPromptText("Password");
+        passField.getStyleClass().add("atm-input");
 
         Button loginBtn = new Button("Login");
         Button backBtn = new Button("Back");
 
+        loginBtn.getStyleClass().add("atm-primary-button");
+        backBtn.getStyleClass().add("atm-secondary-button");
+
         HBox buttons = new HBox(10, backBtn, loginBtn);
         buttons.setAlignment(Pos.CENTER_RIGHT);
 
-        VBox vbox = new VBox(10, title, userField, passField, buttons);
-        vbox.setPadding(new Insets(20));
+        VBox card = new VBox(10, createCardTitle("Maintenance Access"), userField, passField, buttons);
+        card.setPadding(new Insets(20));
+        card.getStyleClass().add("atm-card");
 
         backBtn.setOnAction(e -> showHomeScene());
         loginBtn.setOnAction(e -> {
@@ -257,7 +288,8 @@ public class ATMJavaFXApp extends Application {
             }
         });
 
-        primaryStage.setScene(new Scene(vbox, 420, 240));
+        BorderPane root = createBaseLayout(header, card, "All actions are logged for security purposes.");
+        setSceneWithTheme(root, 460, 280);
     }
 
     private void showTechnicianMenuScene() {
@@ -267,11 +299,15 @@ public class ATMJavaFXApp extends Application {
         }
 
         Label title = new Label("Maintenance Menu");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        title.getStyleClass().add("atm-title");
 
         Button enableBtn = new Button("Enable Maintenance Mode");
         Button disableBtn = new Button("Disable Maintenance Mode");
         Button logoutBtn = new Button("Log Out");
+
+        enableBtn.getStyleClass().add("atm-primary-button");
+        disableBtn.getStyleClass().add("atm-secondary-button");
+        logoutBtn.getStyleClass().add("atm-danger-button");
 
         enableBtn.setMaxWidth(Double.MAX_VALUE);
         disableBtn.setMaxWidth(Double.MAX_VALUE);
@@ -285,11 +321,14 @@ public class ATMJavaFXApp extends Application {
             showHomeScene();
         });
 
-        VBox vbox = new VBox(10, title, enableBtn, disableBtn, logoutBtn);
-        vbox.setPadding(new Insets(20));
-        vbox.setAlignment(Pos.CENTER);
+        VBox card = new VBox(10, title, enableBtn, disableBtn, logoutBtn);
+        card.setPadding(new Insets(20));
+        card.setAlignment(Pos.CENTER);
+        card.getStyleClass().add("atm-card");
 
-        primaryStage.setScene(new Scene(vbox, 420, 240));
+        VBox header = createHeader("Maintenance Menu", "Change ATM availability state.");
+        BorderPane root = createBaseLayout(header, card, "Ensure no customer is using the ATM before enabling maintenance mode.");
+        setSceneWithTheme(root, 460, 280);
     }
 
     // --- Monetary actions (FX) ---
@@ -462,8 +501,8 @@ public class ATMJavaFXApp extends Application {
     private Optional<String> showTextInput(String title, String message) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle(title);
-        dialog.setHeaderText(message);
-        dialog.setContentText(null);
+        dialog.setHeaderText(title);
+        dialog.setContentText(message);
         return dialog.showAndWait();
     }
 
@@ -484,7 +523,8 @@ public class ATMJavaFXApp extends Application {
     private boolean showConfirmation(String msg) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
-        alert.setHeaderText(msg);
+        alert.setHeaderText("Confirmation");
+        alert.setContentText(msg);
         alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
         Optional<ButtonType> res = alert.showAndWait();
         return res.isPresent() && res.get() == ButtonType.OK;
@@ -493,15 +533,73 @@ public class ATMJavaFXApp extends Application {
     private void showError(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText(msg);
+        alert.setHeaderText("Error");
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 
     private void showInfo(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
-        alert.setHeaderText(msg);
+        alert.setHeaderText("Information");
+        alert.setContentText(msg);
         alert.showAndWait();
+    }
+
+    // --- Layout helpers for more realistic UI ---
+
+    private VBox createHeader(String titleText, String subtitleText) {
+        Label title = new Label(titleText);
+        title.getStyleClass().add("atm-header-title");
+
+        Label subtitle = new Label(subtitleText);
+        subtitle.getStyleClass().add("atm-header-subtitle");
+
+        VBox headerText = new VBox(2, title, subtitle);
+
+        HBox header = new HBox(headerText);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.getStyleClass().add("atm-header");
+
+        VBox wrapper = new VBox(header);
+        return wrapper;
+    }
+
+    private Label createCardTitle(String text) {
+        Label title = new Label(text);
+        title.getStyleClass().add("atm-title");
+        return title;
+    }
+
+    private BorderPane createBaseLayout(VBox header, VBox centerCard, String footerText) {
+        BorderPane root = new BorderPane();
+        root.setTop(header);
+
+        StackPane centerWrapper = new StackPane(centerCard);
+        centerWrapper.setPadding(new Insets(24));
+        root.setCenter(centerWrapper);
+
+        if (footerText != null && !footerText.isEmpty()) {
+            Text footer = new Text(footerText);
+            footer.getStyleClass().add("atm-footer-text");
+            HBox footerBox = new HBox(footer);
+            footerBox.setAlignment(Pos.CENTER);
+            footerBox.getStyleClass().add("atm-footer");
+            root.setBottom(footerBox);
+        }
+
+        return root;
+    }
+
+    private void setSceneWithTheme(Parent root, double width, double height) {
+        Scene scene = new Scene(root, width, height);
+        String css = getClass().getResource("/atm-style.css") != null
+                ? getClass().getResource("/atm-style.css").toExternalForm()
+                : null;
+        if (css != null) {
+            scene.getStylesheets().add(css);
+        }
+        primaryStage.setScene(scene);
     }
 
     public static void main(String[] args) {
