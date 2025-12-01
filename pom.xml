@@ -4,6 +4,41 @@
   <groupId>org.example</groupId>
   <artifactId>AtmMachine</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Archetype - AtmMachine</name>
+  <name>ATM Transaction System</name>
   <url>http://maven.apache.org</url>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <javafx.version>21.0.5</javafx.version>
+  </properties>
+
+  <dependencies>
+    <!-- JavaFX UI -->
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- JavaFX Maven plugin: mvn clean javafx:run -->
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <!-- Plugin sürümü, JavaFX kütüphane sürümünden farklıdır -->
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>org.example.ui.ATMJavaFXApp</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

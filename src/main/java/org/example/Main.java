@@ -1,19 +1,18 @@
 package org.example;
 
 /**
- * Entry point for the ATM Transaction System demo.
+ * Entry point for the ATM Transaction System.
  *
- * This is a simple console application that simulates the main use cases
- * defined in the homework:
- * - MonetaryTransaction (deposit, withdraw, check balance, transfer)
- * - ManageAccount (change PIN, report emergency)
- * - SystemMaintenance (technician maintenance mode)
- *
- * The focus is on showing the logic and flows, not on real networking or encryption.
+ * Varsayılan olarak JavaFX arayüzünü açar.
+ * Konsol versiyonuna ihtiyaç olursa, ATMConsoleApp'i ayrıca çalıştırabilirsin.
  */
 public class Main {
     public static void main(String[] args) {
-        new org.example.console.ATMConsoleApp().run();
+        // JavaFX UI
+        org.example.ui.ATMJavaFXApp.main(args);
+
+        // Konsol UI'yi çalıştırmak istersen:
+        // new org.example.console.ATMConsoleApp().run();
     }
 }
 
