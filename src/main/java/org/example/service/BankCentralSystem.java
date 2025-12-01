@@ -27,7 +27,7 @@ public class BankCentralSystem {
     private void seedDemoData() {
         Account a1 = new Account("ACC-1001", BigDecimal.valueOf(2_000));
         Account a2 = new Account("ACC-1002", BigDecimal.valueOf(5_000));
-        customersByCard.put("1111222233334444",
+        customersByCard.put("1",
                 new Customer("1", "1234", "Ali Veli", a1));
         customersByCard.put("5555666677778888",
                 new Customer("5555666677778888", "4321", "Ayse Fatma", a2));
