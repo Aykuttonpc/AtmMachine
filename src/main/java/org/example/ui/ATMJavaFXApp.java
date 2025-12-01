@@ -67,7 +67,8 @@ public class ATMJavaFXApp extends Application {
         card.setPadding(new Insets(20));
         card.getStyleClass().add("atm-card");
 
-        BorderPane root = createBaseLayout(header, card, "Insert your card to begin. For assistance, contact your bank.");
+        BorderPane root = createBaseLayout(header, card,
+                "Insert your card to begin. For assistance, contact your bank.");
         setSceneWithTheme(root, 460, 320);
     }
 
@@ -165,7 +166,8 @@ public class ATMJavaFXApp extends Application {
         card.getStyleClass().add("atm-card");
 
         VBox header = createHeader("Customer Menu", "Select the operation you want to perform.");
-        BorderPane root = createBaseLayout(header, card, "For your security, you will be logged out after each transaction.");
+        BorderPane root = createBaseLayout(header, card,
+                "For your security, you will be logged out after each transaction.");
         setSceneWithTheme(root, 460, 300);
     }
 
@@ -197,7 +199,7 @@ public class ATMJavaFXApp extends Application {
         withdrawBtn.setOnAction(e -> doWithdrawFx());
         balanceBtn.setOnAction(e -> {
             showInfo("Your current balance: " + bank.getBalance(currentCustomer) + " TL");
-            autoLogoutAfterTransaction();
+            showCustomerMenuScene();
         });
         transferBtn.setOnAction(e -> doTransferFx());
 
@@ -246,7 +248,8 @@ public class ATMJavaFXApp extends Application {
         card.getStyleClass().add("atm-card");
 
         VBox header = createHeader("Manage Account", "Update your PIN or report an emergency.");
-        BorderPane root = createBaseLayout(header, card, "In case of stolen card, immediately contact your bank call center.");
+        BorderPane root = createBaseLayout(header, card,
+                "In case of stolen card, immediately contact your bank call center.");
         setSceneWithTheme(root, 460, 280);
     }
 
@@ -327,18 +330,22 @@ public class ATMJavaFXApp extends Application {
         card.getStyleClass().add("atm-card");
 
         VBox header = createHeader("Maintenance Menu", "Change ATM availability state.");
-        BorderPane root = createBaseLayout(header, card, "Ensure no customer is using the ATM before enabling maintenance mode.");
+        BorderPane root = createBaseLayout(header, card,
+                "Ensure no customer is using the ATM before enabling maintenance mode.");
         setSceneWithTheme(root, 460, 280);
     }
 
     // --- Monetary actions (FX) ---
 
     private void doDepositFx() {
-        if (currentCustomer == null) return;
+        if (currentCustomer == null)
+            return;
         Optional<String> result = showTextInput("Deposit", "Enter amount to deposit:");
-        if (result.isEmpty()) return;
+        if (result.isEmpty())
+            return;
         BigDecimal amount = parseAmount(result.get());
-        if (amount == null) return;
+        if (amount == null)
+            return;
 
         if (!showConfirmation("Confirm deposit of " + amount + " TL?")) {
             showInfo("Deposit cancelled. Money and card returned.");
@@ -355,12 +362,15 @@ public class ATMJavaFXApp extends Application {
     }
 
     private void doWithdrawFx() {
-        if (currentCustomer == null) return;
+        if (currentCustomer == null)
+            return;
         while (true) {
             Optional<String> result = showTextInput("Withdraw", "Enter amount to withdraw:");
-            if (result.isEmpty()) return;
+            if (result.isEmpty())
+                return;
             BigDecimal amount = parseAmount(result.get());
-            if (amount == null) return;
+            if (amount == null)
+                return;
 
             if (bank.getAtmCashStock().compareTo(amount) < 0) {
                 boolean again = showConfirmation("ATM doesn't have enough cash. Enter different amount?");
@@ -390,9 +400,11 @@ public class ATMJavaFXApp extends Application {
     }
 
     private void doTransferFx() {
-        if (currentCustomer == null) return;
+        if (currentCustomer == null)
+            return;
         Optional<String> cardResult = showTextInput("Transfer", "Enter target card number:");
-        if (cardResult.isEmpty()) return;
+        if (cardResult.isEmpty())
+            return;
         String targetCard = cardResult.get().trim();
         if (!bank.isValidCard(targetCard)) {
             showError("Invalid card number.");
@@ -406,9 +418,11 @@ public class ATMJavaFXApp extends Application {
         }
 
         Optional<String> amountResult = showTextInput("Transfer", "Enter amount to transfer:");
-        if (amountResult.isEmpty()) return;
+        if (amountResult.isEmpty())
+            return;
         BigDecimal amount = parseAmount(amountResult.get());
-        if (amount == null) return;
+        if (amount == null)
+            return;
 
         boolean ok = bank.transfer(currentCustomer, targetCard, amount);
         if (ok) {
@@ -422,9 +436,11 @@ public class ATMJavaFXApp extends Application {
     // --- Manage account (FX) ---
 
     private void doChangePinFx() {
-        if (currentCustomer == null) return;
+        if (currentCustomer == null)
+            return;
         Optional<String> oldPinRes = showTextInput("Change PIN", "Enter your old PIN:");
-        if (oldPinRes.isEmpty()) return;
+        if (oldPinRes.isEmpty())
+            return;
         if (!currentCustomer.getPin().equals(oldPinRes.get().trim())) {
             showError("Incorrect PIN. Card returned.");
             autoLogoutAfterTransaction();
@@ -432,9 +448,11 @@ public class ATMJavaFXApp extends Application {
         }
 
         Optional<String> newPin1Res = showTextInput("Change PIN", "Enter your new PIN:");
-        if (newPin1Res.isEmpty()) return;
+        if (newPin1Res.isEmpty())
+            return;
         Optional<String> newPin2Res = showTextInput("Change PIN", "Re-enter your new PIN:");
-        if (newPin2Res.isEmpty()) return;
+        if (newPin2Res.isEmpty())
+            return;
 
         if (!newPin1Res.get().trim().equals(newPin2Res.get().trim())) {
             showError("PINs do not match, try again. Card returned.");
@@ -447,13 +465,15 @@ public class ATMJavaFXApp extends Application {
     }
 
     private void doReportEmergencyFx() {
-        if (currentCustomer == null) return;
+        if (currentCustomer == null)
+            return;
         ChoiceDialog<String> dialog = new ChoiceDialog<>("Stuck Card",
                 "Stuck Card", "Stolen Card", "Cash Jam");
         dialog.setTitle("Report Emergency");
         dialog.setHeaderText("Select emergency type:");
         Optional<String> res = dialog.showAndWait();
-        if (res.isEmpty()) return;
+        if (res.isEmpty())
+            return;
 
         String type = res.get();
         if (!showConfirmation("Do you confirm to report this?\n" + type)) {
@@ -492,7 +512,8 @@ public class ATMJavaFXApp extends Application {
     // --- Helpers ---
 
     private void autoLogoutAfterTransaction() {
-        // Homework gereksinimine göre: işlem tamamlandığında otomatik logout ve kart iadesi
+        // Homework gereksinimine göre: işlem tamamlandığında otomatik logout ve kart
+        // iadesi
         this.currentCustomer = null;
         showInfo("Task completed. Card returned. You are logged out.");
         showHomeScene();
@@ -606,5 +627,3 @@ public class ATMJavaFXApp extends Application {
         launch(args);
     }
 }
-
-
