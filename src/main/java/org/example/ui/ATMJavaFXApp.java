@@ -413,8 +413,9 @@ public class ATMJavaFXApp extends Application {
         }
 
         if (!showConfirmation("Is this target card correct?\n" + targetCard)) {
-            showInfo("Transfer cancelled. Card returned.");
-            showMonetaryScene();
+            showInfo("Transfer cancelled.");
+            this.currentCustomer = null;
+            showCustomerLoginScene();
             return;
         }
 
