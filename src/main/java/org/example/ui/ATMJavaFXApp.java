@@ -435,11 +435,15 @@ public class ATMJavaFXApp extends Application {
         }
 
         Optional<String> amountResult = showTextInput("Transfer", "Enter amount to transfer:");
-        if (amountResult.isEmpty())
+        if (amountResult.isEmpty()) {
+            showMonetaryScene();
             return;
+        }
         BigDecimal amount = parseAmount(amountResult.get());
-        if (amount == null)
+        if (amount == null) {
+            showMonetaryScene();
             return;
+        }
 
         boolean ok = bank.transfer(currentCustomer, targetCard, amount);
         if (ok) {
