@@ -349,7 +349,7 @@ public class ATMJavaFXApp extends Application {
 
         if (!showConfirmation("Confirm deposit of " + amount + " TL?")) {
             showInfo("Deposit cancelled. Money and card returned.");
-            autoLogoutAfterTransaction();
+            showMonetaryScene();
             return;
         }
         boolean ok = bank.deposit(currentCustomer, amount);
@@ -358,7 +358,7 @@ public class ATMJavaFXApp extends Application {
         } else {
             showError("Error while depositing. Operation cancelled.");
         }
-        autoLogoutAfterTransaction();
+        showMonetaryScene();
     }
 
     private void doWithdrawFx() {
@@ -376,7 +376,7 @@ public class ATMJavaFXApp extends Application {
                 boolean again = showConfirmation("ATM doesn't have enough cash. Enter different amount?");
                 if (!again) {
                     showInfo("Card returned.");
-                    autoLogoutAfterTransaction();
+                    showMonetaryScene();
                     return;
                 }
                 continue;
@@ -384,18 +384,19 @@ public class ATMJavaFXApp extends Application {
 
             if (!showConfirmation("Confirm withdrawal of " + amount + " TL?")) {
                 showInfo("Withdrawal cancelled. Card returned.");
-                autoLogoutAfterTransaction();
+                showMonetaryScene();
                 return;
             }
 
             boolean ok = bank.withdraw(currentCustomer, amount);
             if (!ok) {
                 showError("Insufficient funds. Please enter an amount within your balance.");
+                continue;
             } else {
                 showInfo("Please take your cash. New balance: " + bank.getBalance(currentCustomer) + " TL");
+                showMonetaryScene();
+                return;
             }
-            autoLogoutAfterTransaction();
-            return;
         }
     }
 
@@ -413,7 +414,7 @@ public class ATMJavaFXApp extends Application {
 
         if (!showConfirmation("Is this target card correct?\n" + targetCard)) {
             showInfo("Transfer cancelled. Card returned.");
-            autoLogoutAfterTransaction();
+            showMonetaryScene();
             return;
         }
 
@@ -430,7 +431,7 @@ public class ATMJavaFXApp extends Application {
         } else {
             showError("Transfer failed (insufficient funds or system error).");
         }
-        autoLogoutAfterTransaction();
+        showMonetaryScene();
     }
 
     // --- Manage account (FX) ---
