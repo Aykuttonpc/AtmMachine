@@ -416,6 +416,11 @@ public class ATMJavaFXApp extends Application {
                 continue;
             }
 
+            if (targetCard.equals(currentCustomer.getCardNumber())) {
+                showError("You cannot transfer money to your own account. Please enter a different card number.");
+                continue;
+            }
+
             if (!showConfirmation("Is this target card correct?\n" + targetCard)) {
                 boolean again = showConfirmation("Enter different card number?");
                 if (!again) {
