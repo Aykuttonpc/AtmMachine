@@ -406,17 +406,13 @@ public class ATMJavaFXApp extends Application {
         String targetCard;
         while (true) {
             Optional<String> cardResult = showTextInput("Transfer", "Enter target card number:");
-            if (cardResult.isEmpty())
+            if (cardResult.isEmpty()) {
+                showMonetaryScene();
                 return;
+            }
             targetCard = cardResult.get().trim();
             if (!bank.isValidCard(targetCard)) {
-                boolean again = showConfirmation("Invalid card number. Enter different card number?");
-                if (!again) {
-                    showInfo("Transfer cancelled.");
-                    this.currentCustomer = null;
-                    showCustomerLoginScene();
-                    return;
-                }
+                showError("Invalid card number. Please enter a valid card number.");
                 continue;
             }
             break;
