@@ -429,13 +429,6 @@ public class ATMJavaFXApp extends Application {
             }
 
             if (!showConfirmation("Is this target card correct?\n" + targetCard)) {
-                boolean again = showConfirmation("Enter different card number?");
-                if (!again) {
-                    showInfo("Transfer cancelled.");
-                    this.currentCustomer = null;
-                    showCustomerLoginScene();
-                    return;
-                }
                 continue;
             }
             break;
