@@ -341,11 +341,17 @@ public class ATMJavaFXApp extends Application {
         if (currentCustomer == null)
             return;
         Optional<String> result = showTextInput("Deposit", "Enter amount to deposit:");
-        if (result.isEmpty())
+        if (result.isEmpty()) {
+            showInfo("Deposit cancelled. Money and card returned.");
+            autoLogoutAfterTransaction();
             return;
+        }
         BigDecimal amount = parseAmount(result.get());
-        if (amount == null)
+        if (amount == null) {
+            showInfo("Deposit cancelled. Money and card returned.");
+            autoLogoutAfterTransaction();
             return;
+        }
 
         if (!showConfirmation("Confirm deposit of " + amount + " TL?")) {
             showInfo("Deposit cancelled. Money and card returned.");
@@ -355,10 +361,11 @@ public class ATMJavaFXApp extends Application {
         boolean ok = bank.deposit(currentCustomer, amount);
         if (ok) {
             showInfo("Deposit successful. New balance: " + bank.getBalance(currentCustomer) + " TL");
+            autoLogoutAfterTransaction();
         } else {
             showError("Error while depositing. Operation cancelled.");
+            autoLogoutAfterTransaction();
         }
-        showMonetaryScene();
     }
 
     private void doWithdrawFx() {
