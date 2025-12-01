@@ -1,0 +1,119 @@
+/* Genel arka plan ve sahne ayarları */
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial";
+    -fx-background-color: linear-gradient(to bottom, #0b1c2e, #020712);
+}
+
+/* Başlık alanı */
+.atm-header {
+    -fx-padding: 16 24 12 24;
+    -fx-background-color: linear-gradient(to right, #003973, #0099ff);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 12, 0.4, 0, 4);
+}
+
+.atm-header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.atm-header-subtitle {
+    -fx-text-fill: rgba(255,255,255,0.85);
+    -fx-font-size: 13px;
+}
+
+/* Ortadaki kart/panel */
+.atm-card {
+    -fx-background-color: #0f2438;
+    -fx-padding: 20;
+    -fx-spacing: 12;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: rgba(255,255,255,0.08);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.65), 18, 0.35, 0, 10);
+}
+
+.atm-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.atm-subtitle {
+    -fx-text-fill: #c0d3ff;
+    -fx-font-size: 13px;
+}
+
+.atm-label {
+    -fx-text-fill: #e2e8f0;
+}
+
+.atm-state-label {
+    -fx-text-fill: #a0aec0;
+    -fx-font-size: 12px;
+}
+
+/* Input alanları */
+.atm-input {
+    -fx-background-color: #071522;
+    -fx-text-fill: #e2e8f0;
+    -fx-padding: 8 10 8 10;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(148,163,184,0.6);
+    -fx-border-width: 1;
+}
+
+.atm-input:focused {
+    -fx-border-color: #38bdf8;
+    -fx-effect: dropshadow(gaussian, rgba(56,189,248,0.6), 10, 0.3, 0, 0);
+}
+
+/* Butonlar */
+.atm-primary-button {
+    -fx-background-color: linear-gradient(to bottom, #22c55e, #15803d);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14 8 14;
+}
+
+.atm-primary-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #4ade80, #16a34a);
+}
+
+.atm-secondary-button {
+    -fx-background-color: #1f2933;
+    -fx-text-fill: #e5e7eb;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14 8 14;
+}
+
+.atm-secondary-button:hover {
+    -fx-background-color: #374151;
+}
+
+.atm-danger-button {
+    -fx-background-color: linear-gradient(to bottom, #ef4444, #b91c1c);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14 8 14;
+}
+
+.atm-danger-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #f87171, #dc2626);
+}
+
+/* Alt bilgi / cihaz durumu alanı */
+.atm-footer {
+    -fx-padding: 6 16 10 16;
+}
+
+.atm-footer-text {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 11px;
+}
+
+
