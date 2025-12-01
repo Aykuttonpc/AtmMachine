@@ -403,13 +403,23 @@ public class ATMJavaFXApp extends Application {
     private void doTransferFx() {
         if (currentCustomer == null)
             return;
-        Optional<String> cardResult = showTextInput("Transfer", "Enter target card number:");
-        if (cardResult.isEmpty())
-            return;
-        String targetCard = cardResult.get().trim();
-        if (!bank.isValidCard(targetCard)) {
-            showError("Invalid card number.");
-            return;
+        String targetCard;
+        while (true) {
+            Optional<String> cardResult = showTextInput("Transfer", "Enter target card number:");
+            if (cardResult.isEmpty())
+                return;
+            targetCard = cardResult.get().trim();
+            if (!bank.isValidCard(targetCard)) {
+                boolean again = showConfirmation("Invalid card number. Enter different card number?");
+                if (!again) {
+                    showInfo("Transfer cancelled.");
+                    this.currentCustomer = null;
+                    showCustomerLoginScene();
+                    return;
+                }
+                continue;
+            }
+            break;
         }
 
         if (!showConfirmation("Is this target card correct?\n" + targetCard)) {
