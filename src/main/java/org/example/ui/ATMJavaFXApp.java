@@ -415,14 +415,18 @@ public class ATMJavaFXApp extends Application {
                 showError("Invalid card number. Please enter a valid card number.");
                 continue;
             }
-            break;
-        }
 
-        if (!showConfirmation("Is this target card correct?\n" + targetCard)) {
-            showInfo("Transfer cancelled.");
-            this.currentCustomer = null;
-            showCustomerLoginScene();
-            return;
+            if (!showConfirmation("Is this target card correct?\n" + targetCard)) {
+                boolean again = showConfirmation("Enter different card number?");
+                if (!again) {
+                    showInfo("Transfer cancelled.");
+                    this.currentCustomer = null;
+                    showCustomerLoginScene();
+                    return;
+                }
+                continue;
+            }
+            break;
         }
 
         Optional<String> amountResult = showTextInput("Transfer", "Enter amount to transfer:");
