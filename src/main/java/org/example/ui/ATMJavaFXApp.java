@@ -199,7 +199,7 @@ public class ATMJavaFXApp extends Application {
         withdrawBtn.setOnAction(e -> doWithdrawFx());
         balanceBtn.setOnAction(e -> {
             showInfo("Your current balance: " + bank.getBalance(currentCustomer) + " TL");
-            showCustomerMenuScene();
+            showMonetaryScene();
         });
         transferBtn.setOnAction(e -> doTransferFx());
 
@@ -394,7 +394,7 @@ public class ATMJavaFXApp extends Application {
                 continue;
             } else {
                 showInfo("Please take your cash. New balance: " + bank.getBalance(currentCustomer) + " TL");
-                showMonetaryScene();
+                autoLogoutAfterTransaction();
                 return;
             }
         }
