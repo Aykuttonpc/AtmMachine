@@ -136,7 +136,7 @@ public class ATMJavaFXApp extends Application {
 
         Button monetaryBtn = new Button("Monetary Transactions");
         Button manageBtn = new Button("Manage Account");
-        Button logoutBtn = new Button("Logout (Card Returned)");
+        Button logoutBtn = new Button("Cancel");
 
         monetaryBtn.getStyleClass().add("atm-primary-button");
         manageBtn.getStyleClass().add("atm-secondary-button");
@@ -203,7 +203,7 @@ public class ATMJavaFXApp extends Application {
         });
         transferBtn.setOnAction(e -> doTransferFx());
 
-        Button backBtn = new Button("Back");
+        Button backBtn = new Button("Cancel");
         backBtn.getStyleClass().add("atm-secondary-button");
         backBtn.setOnAction(e -> showCustomerMenuScene());
 
