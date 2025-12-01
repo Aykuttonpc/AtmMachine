@@ -454,7 +454,7 @@ public class ATMJavaFXApp extends Application {
         } else {
             showError("Transfer failed (insufficient funds or system error).");
         }
-        showMonetaryScene();
+        autoLogoutAfterTransaction();
     }
 
     // --- Manage account (FX) ---
