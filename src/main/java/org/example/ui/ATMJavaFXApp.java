@@ -349,7 +349,7 @@ public class ATMJavaFXApp extends Application {
 
         if (!showConfirmation("Confirm deposit of " + amount + " TL?")) {
             showInfo("Deposit cancelled. Money and card returned.");
-            showMonetaryScene();
+            autoLogoutAfterTransaction();
             return;
         }
         boolean ok = bank.deposit(currentCustomer, amount);
